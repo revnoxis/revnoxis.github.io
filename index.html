@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Revnoxis | Roblox Scripter</title>
 
-  <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
   <style>
@@ -12,52 +11,93 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
+      font-family: Inter, sans-serif;
+      scroll-behavior: smooth;
     }
 
     body {
-      background: radial-gradient(circle at top, #1a1a2e, #0f0f0f);
+      background: #0b0b10;
       color: white;
       overflow-x: hidden;
     }
 
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 80px 20px;
+    /* 🌈 animated background glow */
+    .glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(168,85,247,0.25), transparent 60%);
+      top: -200px;
+      left: -200px;
+      filter: blur(60px);
+      animation: move 10s infinite alternate;
+      z-index: -1;
     }
 
-    /* Header */
-    h1 {
-      font-size: 52px;
-      font-weight: 800;
-      letter-spacing: 1px;
+    @keyframes move {
+      0% { transform: translate(0,0); }
+      100% { transform: translate(300px,200px); }
     }
 
-    .tag {
-      margin-top: 10px;
-      color: #a855f7;
-      font-weight: 600;
-    }
-
-    /* Cards */
-    .card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 20px;
-      border-radius: 14px;
-      margin-top: 20px;
+    /* NAVBAR */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 15px 30px;
+      background: rgba(0,0,0,0.4);
       backdrop-filter: blur(10px);
-      transition: 0.3s ease;
+      display: flex;
+      justify-content: space-between;
+      z-index: 10;
+    }
+
+    nav a {
+      color: #aaa;
+      margin-left: 20px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #a855f7;
+    }
+
+    .container {
+      max-width: 950px;
+      margin: auto;
+      padding: 120px 20px;
+    }
+
+    /* HERO */
+    h1 {
+      font-size: 60px;
+      font-weight: 800;
+    }
+
+    .typing {
+      color: #a855f7;
+      margin-top: 10px;
+      font-weight: 600;
+      height: 25px;
+    }
+
+    /* CARDS */
+    .card {
+      margin-top: 25px;
+      padding: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      transition: 0.3s;
     }
 
     .card:hover {
       transform: translateY(-5px);
       border-color: #a855f7;
-      box-shadow: 0 0 20px rgba(168,85,247,0.3);
+      box-shadow: 0 0 25px rgba(168,85,247,0.25);
     }
 
-    /* Projects */
     .project {
       margin-top: 12px;
       padding: 12px;
@@ -67,24 +107,12 @@
     }
 
     .project:hover {
-      transform: scale(1.02);
-      background: rgba(168,85,247,0.1);
+      transform: scale(1.03);
+      background: rgba(168,85,247,0.12);
     }
 
-    /* Links */
-    a {
-      color: #a855f7;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    /* Section titles */
-    h2 {
-      margin-bottom: 10px;
-      font-size: 22px;
+    section {
+      margin-top: 80px;
     }
 
   </style>
@@ -92,36 +120,73 @@
 
 <body>
 
-  <div class="container">
+<div class="glow"></div>
 
+<nav>
+  <div><b>Revnoxis</b></div>
+  <div>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- HERO -->
+  <section>
     <h1>Revnoxis</h1>
-    <div class="tag">Roblox Scripter • Systems Developer</div>
+    <div class="typing" id="typing"></div>
+  </section>
 
+  <!-- ABOUT -->
+  <section id="about">
     <div class="card">
       <h2>About Me</h2>
       <p>
-        I build high-quality Roblox systems including combat, UI, inventory systems, and backend logic.
-        Focused on clean code, performance, and scalable design.
+        Roblox scripter focused on high-performance systems, clean architecture,
+        and scalable gameplay mechanics.
       </p>
     </div>
+  </section>
 
+  <!-- PROJECTS -->
+  <section id="projects">
     <div class="card">
       <h2>Projects</h2>
 
-      <div class="project">🔥 Combat System — combo-based melee system with hit detection</div>
-      <div class="project">🎒 Inventory System — modular and expandable item framework</div>
-      <div class="project">💾 DataStore System — secure saving/loading system</div>
-      <div class="project">🖥 UI Framework — reusable UI components</div>
+      <div class="project">⚔ Combat System — combo chains, hit detection, VFX sync</div>
+      <div class="project">🎒 Inventory System — modular slot-based system</div>
+      <div class="project">💾 Data System — secure saving + session handling</div>
+      <div class="project">🧠 UI Framework — reusable components for Roblox UI</div>
 
     </div>
+  </section>
 
+  <!-- CONTACT -->
+  <section id="contact">
     <div class="card">
       <h2>Contact</h2>
       <p>Discord: yourname</p>
-      <p>Roblox: <a href="https://www.roblox.com/">Profile Link</a></p>
+      <p>Roblox: https://www.roblox.com/users/</p>
     </div>
+  </section>
 
-  </div>
+</div>
+
+<script>
+  // typing animation
+  const text = "Roblox Scripter • System Developer • UI Engineer";
+  let i = 0;
+  function type() {
+    if (i < text.length) {
+      document.getElementById("typing").innerHTML += text.charAt(i);
+      i++;
+      setTimeout(type, 50);
+    }
+  }
+  type();
+</script>
 
 </body>
 </html>
