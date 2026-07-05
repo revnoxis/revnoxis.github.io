@@ -1,1130 +1,1588 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Revnoxis | Roblox Systems Developer</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-
-<style>
-:root {
-  --bg: #030303;
-  --bg2: #080808;
-  --card: rgba(255, 255, 255, 0.045);
-  --card2: rgba(255, 255, 255, 0.075);
-  --border: rgba(255, 255, 255, 0.105);
-  --border2: rgba(255, 255, 255, 0.18);
-  --text: #f5f5f5;
-  --muted: #a3a3a3;
-  --soft: #6f6f6f;
-  --accent: #ffffff;
-  --green: #70f0a6;
-  --purple: #a78bfa;
-  --radius: 26px;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: Inter, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  overflow-x: hidden;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at 50% -10%, rgba(255, 255, 255, 0.12), transparent 32%),
-    radial-gradient(circle at 12% 25%, rgba(167, 139, 250, 0.09), transparent 28%),
-    radial-gradient(circle at 80% 40%, rgba(112, 240, 166, 0.055), transparent 30%),
-    linear-gradient(180deg, #030303 0%, #070707 45%, #020202 100%);
-  z-index: -3;
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: linear-gradient(to bottom, black 0%, transparent 75%);
-  z-index: -2;
-  pointer-events: none;
-}
-
-.noise {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  opacity: 0.08;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-.cursor-glow {
-  position: fixed;
-  width: 520px;
-  height: 520px;
-  border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(circle, rgba(255,255,255,0.075), transparent 62%);
-  transform: translate(-50%, -50%);
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.container {
-  width: min(1180px, calc(100% - 40px));
-  margin: 0 auto;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-nav {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  backdrop-filter: blur(18px);
-  background: rgba(3, 3, 3, 0.72);
-  border-bottom: 1px solid rgba(255,255,255,0.075);
-}
-
-.nav-inner {
-  height: 78px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  font-family: Space Grotesk, sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  font-size: 20px;
-}
-
-.logo-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 11px;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.18));
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.45);
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 26px;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.nav-links a {
-  transition: 0.2s ease;
-}
-
-.nav-links a:hover {
-  color: white;
-}
-
-.nav-cta {
-  padding: 10px 14px;
-  border: 1px solid rgba(255,255,255,0.16);
-  border-radius: 999px;
-  color: white !important;
-  background: rgba(255,255,255,0.055);
-}
-
-.hero {
-  min-height: calc(100vh - 78px);
-  display: grid;
-  grid-template-columns: 1.08fr 0.92fr;
-  gap: 34px;
-  align-items: center;
-  padding: 76px 0 60px;
-}
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: rgba(255,255,255,0.04);
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 24px;
-}
-
-.pulse {
-  width: 8px;
-  height: 8px;
-  background: var(--green);
-  border-radius: 50%;
-  box-shadow: 0 0 22px rgba(112, 240, 166, 0.7);
-}
-
-h1 {
-  font-family: Space Grotesk, sans-serif;
-  font-size: clamp(48px, 8vw, 96px);
-  line-height: 0.88;
-  letter-spacing: -0.075em;
-  max-width: 790px;
-}
-
-.hero h1 span {
-  color: #a9a9a9;
-}
-
-.hero-copy {
-  margin-top: 28px;
-  max-width: 650px;
-  color: var(--muted);
-  font-size: 18px;
-  line-height: 1.75;
-}
-
-.hero-copy strong {
-  color: white;
-  font-weight: 700;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 13px;
-  margin-top: 34px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 0 18px;
-  border-radius: 14px;
-  font-size: 14px;
-  font-weight: 800;
-  transition: 0.22s ease;
-}
-
-.btn-primary {
-  background: white;
-  color: black;
-}
-
-.btn-secondary {
-  border: 1px solid var(--border2);
-  background: rgba(255,255,255,0.05);
-  color: white;
-}
-
-.btn:hover {
-  transform: translateY(-3px);
-}
-
-.hero-proof {
-  margin-top: 42px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  max-width: 680px;
-}
-
-.proof {
-  padding: 16px;
-  border-radius: 18px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.035);
-}
-
-.proof strong {
-  display: block;
-  font-size: 22px;
-  letter-spacing: -0.05em;
-}
-
-.proof span {
-  color: var(--soft);
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.showcase {
-  position: relative;
-}
-
-.device {
-  position: relative;
-  border-radius: 34px;
-  padding: 14px;
-  background:
-    linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.025));
-  border: 1px solid rgba(255,255,255,0.16);
-  box-shadow:
-    0 40px 120px rgba(0,0,0,0.7),
-    inset 0 1px 0 rgba(255,255,255,0.18);
-  transform-style: preserve-3d;
-}
-
-.device-screen {
-  border-radius: 24px;
-  background: #060606;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-
-.screen-top {
-  height: 46px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.035);
-}
-
-.window-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.22);
-}
-
-.screen-body {
-  padding: 22px;
-}
-
-.profile-card {
-  padding: 22px;
-  border-radius: 22px;
-  border: 1px solid rgba(255,255,255,0.11);
-  background:
-    radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 32%),
-    linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.025));
-}
-
-.profile-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 18px;
-}
-
-.avatar {
-  width: 58px;
-  height: 58px;
-  border-radius: 18px;
-  background:
-    linear-gradient(135deg, #ffffff, #3a3a3a);
-  box-shadow: 0 14px 40px rgba(255,255,255,0.08);
-}
-
-.status {
-  font-size: 12px;
-  color: var(--green);
-  font-weight: 800;
-  border: 1px solid rgba(112, 240, 166, 0.25);
-  padding: 7px 10px;
-  border-radius: 999px;
-  background: rgba(112, 240, 166, 0.065);
-}
-
-.profile-card h2 {
-  font-family: Space Grotesk, sans-serif;
-  font-size: 34px;
-  letter-spacing: -0.055em;
-  margin-top: 20px;
-}
-
-.profile-card p {
-  color: var(--muted);
-  margin-top: 8px;
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-.mini-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-top: 18px;
-}
-
-.mini {
-  padding: 14px;
-  border-radius: 16px;
-  background: rgba(0,0,0,0.36);
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-.mini span {
-  color: var(--soft);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 800;
-}
-
-.mini strong {
-  display: block;
-  margin-top: 4px;
-  font-size: 14px;
-}
-
-.code-card {
-  margin-top: 14px;
-  padding: 18px;
-  border-radius: 20px;
-  background: rgba(0,0,0,0.48);
-  border: 1px solid rgba(255,255,255,0.09);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  color: #cfcfcf;
-  font-size: 12px;
-  line-height: 1.8;
-}
-
-.code-card .dim {
-  color: #666;
-}
-
-.code-card .key {
-  color: white;
-}
-
-.float-card {
-  position: absolute;
-  right: -18px;
-  bottom: 36px;
-  width: 205px;
-  padding: 16px;
-  border-radius: 20px;
-  background: rgba(12,12,12,0.78);
-  border: 1px solid rgba(255,255,255,0.13);
-  backdrop-filter: blur(18px);
-  box-shadow: 0 25px 80px rgba(0,0,0,0.55);
-}
-
-.float-card span {
-  color: var(--soft);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.float-card strong {
-  display: block;
-  margin-top: 6px;
-  font-size: 22px;
-  letter-spacing: -0.05em;
-}
-
-.section {
-  padding: 96px 0;
-  border-top: 1px solid rgba(255,255,255,0.075);
-}
-
-.section-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 30px;
-  margin-bottom: 30px;
-}
-
-.kicker {
-  color: var(--soft);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 12px;
-  font-weight: 900;
-  margin-bottom: 10px;
-}
-
-.section h2 {
-  font-family: Space Grotesk, sans-serif;
-  font-size: clamp(34px, 5vw, 58px);
-  line-height: 0.96;
-  letter-spacing: -0.065em;
-}
-
-.section-head p {
-  color: var(--muted);
-  max-width: 460px;
-  line-height: 1.75;
-}
-
-.projects {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 18px;
-}
-
-.project {
-  position: relative;
-  min-height: 360px;
-  padding: 26px;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background:
-    radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 32%),
-    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025));
-  overflow: hidden;
-  transition: 0.25s ease;
-}
-
-.project:hover {
-  transform: translateY(-5px);
-  border-color: rgba(255,255,255,0.22);
-}
-
-.project.large {
-  grid-row: span 2;
-}
-
-.project::after {
-  content: "";
-  position: absolute;
-  inset: auto 24px 24px 24px;
-  height: 150px;
-  border-radius: 22px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.13), rgba(255,255,255,0.025)),
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 42px);
-  opacity: 0.72;
-}
-
-.project h3 {
-  font-family: Space Grotesk, sans-serif;
-  font-size: 30px;
-  letter-spacing: -0.055em;
-  position: relative;
-  z-index: 1;
-}
-
-.project p {
-  color: var(--muted);
-  max-width: 520px;
-  margin-top: 12px;
-  line-height: 1.75;
-  position: relative;
-  z-index: 1;
-}
-
-.project ul {
-  list-style: none;
-  display: grid;
-  gap: 9px;
-  margin-top: 22px;
-  color: #d6d6d6;
-  font-size: 14px;
-  position: relative;
-  z-index: 1;
-}
-
-.project li::before {
-  content: "— ";
-  color: white;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 24px;
-  position: relative;
-  z-index: 1;
-}
-
-.tag {
-  padding: 7px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.11);
-  background: rgba(0,0,0,0.28);
-  color: #d7d7d7;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.capabilities {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-}
-
-.capability {
-  min-height: 250px;
-  padding: 22px;
-  border-radius: 24px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.04);
-  transition: 0.25s ease;
-}
-
-.capability:hover {
-  transform: translateY(-4px);
-  background: rgba(255,255,255,0.065);
-}
-
-.number {
-  color: var(--soft);
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 0.1em;
-}
-
-.capability h3 {
-  font-family: Space Grotesk, sans-serif;
-  font-size: 23px;
-  letter-spacing: -0.05em;
-  margin-top: 54px;
-}
-
-.capability p {
-  color: var(--muted);
-  font-size: 14px;
-  margin-top: 10px;
-  line-height: 1.7;
-}
-
-.process {
-  display: grid;
-  gap: 12px;
-}
-
-.step {
-  display: grid;
-  grid-template-columns: 160px 1fr 0.6fr;
-  gap: 24px;
-  align-items: center;
-  padding: 22px;
-  border-radius: 22px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.035);
-}
-
-.step span {
-  color: var(--soft);
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.step h3 {
-  font-family: Space Grotesk, sans-serif;
-  letter-spacing: -0.04em;
-  font-size: 24px;
-}
-
-.step p {
-  color: var(--muted);
-  line-height: 1.65;
-  font-size: 14px;
-}
-
-.contact-panel {
-  position: relative;
-  overflow: hidden;
-  border-radius: 34px;
-  padding: 52px;
-  border: 1px solid rgba(255,255,255,0.13);
-  background:
-    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.13), transparent 28%),
-    linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.025));
-}
-
-.contact-panel h2 {
-  max-width: 760px;
-}
-
-.contact-panel p {
-  color: var(--muted);
-  max-width: 620px;
-  margin-top: 18px;
-  line-height: 1.8;
-}
-
-.contact-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 30px;
-}
-
-.contact-card {
-  padding: 16px 18px;
-  border-radius: 18px;
-  border: 1px solid var(--border);
-  background: rgba(0,0,0,0.25);
-  min-width: 220px;
-}
-
-.contact-card span {
-  display: block;
-  color: var(--soft);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 900;
-}
-
-.contact-card strong {
-  display: block;
-  margin-top: 5px;
-}
-
-footer {
-  padding: 32px 0;
-  color: var(--soft);
-  font-size: 13px;
-  border-top: 1px solid rgba(255,255,255,0.075);
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: 0.7s ease;
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (max-width: 980px) {
-  .hero,
-  .projects {
-    grid-template-columns: 1fr;
-  }
-
-  .capabilities {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .float-card {
-    right: 18px;
-  }
-
-  .step {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 680px) {
-  .container {
-    width: min(100% - 28px, 1180px);
-  }
-
-  .nav-links a:not(.nav-cta) {
-    display: none;
-  }
-
-  .hero {
-    padding-top: 52px;
-  }
-
-  .hero-proof,
-  .mini-grid,
-  .capabilities {
-    grid-template-columns: 1fr;
-  }
-
-  .section {
-    padding: 74px 0;
-  }
-
-  .section-head {
-    display: block;
-  }
-
-  .section-head p {
-    margin-top: 14px;
-  }
-
-  .project {
-    min-height: 430px;
-  }
-
-  .contact-panel {
-    padding: 30px;
-  }
-
-  .float-card {
-    display: none;
-  }
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Revnoxis | Roblox Systems Developer</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================
+       GLOBAL SETUP
+    ========================= */
+
+    :root {
+      --bg: #020202;
+      --panel: rgba(255, 255, 255, 0.045);
+      --panel-strong: rgba(255, 255, 255, 0.075);
+      --border: rgba(255, 255, 255, 0.11);
+      --border-strong: rgba(255, 255, 255, 0.22);
+
+      --text: #f5f5f5;
+      --muted: #a1a1aa;
+      --dim: #66666f;
+
+      --green: #8cffb6;
+      --purple: #b8a4ff;
+
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+
+      --display: "Space Grotesk", sans-serif;
+      --body: "Inter", sans-serif;
+      --mono: "JetBrains Mono", monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--body);
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -4;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(255, 255, 255, 0.13), transparent 30%),
+        radial-gradient(circle at 12% 20%, rgba(184, 164, 255, 0.10), transparent 28%),
+        radial-gradient(circle at 88% 35%, rgba(140, 255, 182, 0.06), transparent 30%),
+        linear-gradient(180deg, #020202 0%, #070707 45%, #010101 100%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 76px 76px;
+      mask-image: linear-gradient(to bottom, black, transparent 75%);
+    }
+
+    ::selection {
+      background: white;
+      color: black;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: 0.075;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.45'/%3E%3C/svg%3E");
+    }
+
+    .cursor-light {
+      position: fixed;
+      width: 620px;
+      height: 620px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 62%);
+      transition: opacity 0.25s ease;
+    }
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
+    .site-nav {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      width: min(1180px, calc(100% - 40px));
+    }
+
+    .nav-inner {
+      height: 66px;
+      padding: 0 12px 0 18px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(5, 5, 5, 0.74);
+      backdrop-filter: blur(20px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 30% 20%, white, rgba(255,255,255,0.2) 48%, rgba(255,255,255,0.08)),
+        linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.28);
+      box-shadow: 0 18px 60px rgba(255,255,255,0.08);
+    }
+
+    .brand-name {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: -0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-links a {
+      padding: 10px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      transition: 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: white;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .nav-links .hire-link {
+      background: white;
+      color: black;
+      padding: 11px 15px;
+    }
+
+    .nav-links .hire-link:hover {
+      background: #e8e8e8;
+      color: black;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      min-height: 100vh;
+      padding: 150px 0 90px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      padding: 8px 13px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.045);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 22px rgba(140,255,182,0.8);
+    }
+
+    .hero-title {
+      font-family: var(--display);
+      font-size: clamp(54px, 8vw, 108px);
+      line-height: 0.84;
+      letter-spacing: -0.085em;
+      max-width: 820px;
+    }
+
+    .hero-title span {
+      display: block;
+    }
+
+    .hero-title .muted {
+      color: #8f8f94;
+    }
+
+    .hero-text {
+      max-width: 650px;
+      margin-top: 30px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .hero-text strong {
+      color: white;
+      font-weight: 800;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 52px;
+      padding: 0 19px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 900;
+      transition: 0.22s ease;
+    }
+
+    .button-primary {
+      background: white;
+      color: black;
+    }
+
+    .button-secondary {
+      border: 1px solid var(--border-strong);
+      background: rgba(255,255,255,0.045);
+      color: white;
+    }
+
+    .button:hover {
+      transform: translateY(-3px);
+    }
+
+    .hero-stats {
+      margin-top: 46px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 700px;
+    }
+
+    .stat-card {
+      position: relative;
+      overflow: hidden;
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(255,255,255,0.035);
+    }
+
+    .stat-card strong {
+      display: block;
+      font-family: var(--display);
+      font-size: 27px;
+      letter-spacing: -0.06em;
+    }
+
+    .stat-card span {
+      display: block;
+      margin-top: 4px;
+      color: var(--dim);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    /* =========================
+       HERO VISUAL CARD
+    ========================= */
+
+    .hero-visual {
+      position: relative;
+    }
+
+    .console-shell {
+      padding: 12px;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255,255,255,0.16);
+      background: linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.035));
+      box-shadow:
+        0 45px 130px rgba(0,0,0,0.72),
+        inset 0 1px 0 rgba(255,255,255,0.18);
+    }
+
+    .console {
+      overflow: hidden;
+      border-radius: 25px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.08), transparent 34%),
+        #050505;
+    }
+
+    .console-top {
+      height: 48px;
+      padding: 0 17px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.075);
+      background: rgba(255,255,255,0.035);
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .window-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+    }
+
+    .console-label {
+      font-family: var(--mono);
+      color: var(--dim);
+      font-size: 12px;
+    }
+
+    .console-body {
+      padding: 22px;
+    }
+
+    .system-card {
+      padding: 22px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.105);
+      background:
+        radial-gradient(circle at top right, rgba(184,164,255,0.12), transparent 38%),
+        linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.025));
+    }
+
+    .system-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .system-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 20px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.15)),
+        radial-gradient(circle, white, transparent);
+      border: 1px solid rgba(255,255,255,0.35);
+      box-shadow: 0 20px 60px rgba(255,255,255,0.08);
+    }
+
+    .status-pill {
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(140,255,182,0.24);
+      background: rgba(140,255,182,0.06);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .system-card h2 {
+      margin-top: 20px;
+      font-family: var(--display);
+      font-size: 36px;
+      line-height: 0.95;
+      letter-spacing: -0.065em;
+    }
+
+    .system-card p {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .system-grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .system-box {
+      padding: 14px;
+      border-radius: 17px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.38);
+    }
+
+    .system-box span {
+      display: block;
+      color: var(--dim);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .system-box strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 14px;
+    }
+
+    .code-box {
+      margin-top: 14px;
+      padding: 17px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(0,0,0,0.48);
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.85;
+      color: #d3d3d3;
+    }
+
+    .code-comment {
+      color: #666;
+    }
+
+    .code-keyword {
+      color: white;
+    }
+
+    .floating-card {
+      position: absolute;
+      right: -14px;
+      bottom: 58px;
+      width: 230px;
+      padding: 16px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.13);
+      background: rgba(10,10,10,0.76);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 25px 80px rgba(0,0,0,0.55);
+    }
+
+    .floating-card span {
+      color: var(--dim);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .floating-card strong {
+      display: block;
+      margin-top: 7px;
+      font-family: var(--display);
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: -0.055em;
+    }
+
+    /* =========================
+       MOVING SKILL STRIP
+    ========================= */
+
+    .skill-strip {
+      overflow: hidden;
+      padding: 17px 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.025);
+    }
+
+    .strip-track {
+      display: flex;
+      gap: 34px;
+      width: max-content;
+      white-space: nowrap;
+      animation: moveStrip 30s linear infinite;
+    }
+
+    .strip-track span {
+      color: #d8d8d8;
+      font-family: var(--display);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .strip-track em {
+      color: var(--dim);
+      font-style: normal;
+    }
+
+    @keyframes moveStrip {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* =========================
+       SHARED SECTIONS
+    ========================= */
+
+    .section {
+      padding: 110px 0;
+      border-top: 1px solid rgba(255,255,255,0.075);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+
+    .kicker {
+      margin-bottom: 12px;
+      color: var(--dim);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      max-width: 760px;
+      font-family: var(--display);
+      font-size: clamp(38px, 5.5vw, 68px);
+      line-height: 0.92;
+      letter-spacing: -0.075em;
+    }
+
+    .section-header p {
+      max-width: 465px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* =========================
+       WORK GRID
+    ========================= */
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+    }
+
+    .work-card {
+      position: relative;
+      min-height: 360px;
+      overflow: hidden;
+      padding: 26px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255,255,255,0.105);
+      background:
+        radial-gradient(circle at var(--mx, 50%) var(--my, 20%), rgba(255,255,255,0.11), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.025));
+      transition: 0.25s ease;
+    }
+
+    .work-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    .work-card.large {
+      min-height: 560px;
+      grid-row: span 2;
+    }
+
+    .work-number {
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .work-card h3 {
+      margin-top: 14px;
+      font-family: var(--display);
+      font-size: 34px;
+      line-height: 0.96;
+      letter-spacing: -0.065em;
+    }
+
+    .work-card p {
+      max-width: 560px;
+      margin-top: 12px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .work-list {
+      margin-top: 22px;
+      display: grid;
+      gap: 10px;
+      list-style: none;
+      color: #d7d7d7;
+      font-size: 14px;
+    }
+
+    .work-list li::before {
+      content: "↳ ";
+      color: white;
+    }
+
+    .tags {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.11);
+      background: rgba(0,0,0,0.28);
+      color: #d7d7d7;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .fake-preview {
+      position: absolute;
+      left: 26px;
+      right: 26px;
+      bottom: 26px;
+      height: 190px;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.13), rgba(255,255,255,0.025)),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.055) 0 1px, transparent 1px 46px);
+    }
+
+    .fake-preview::before {
+      content: "";
+      position: absolute;
+      inset: 24px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background:
+        linear-gradient(90deg, rgba(0,0,0,0.26), transparent),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 26px);
+    }
+
+    .fake-preview::after {
+      content: "";
+      position: absolute;
+      top: 24px;
+      right: 42px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 60%);
+    }
+
+    /* =========================
+       CAPABILITIES
+    ========================= */
+
+    .capability-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .capability-card {
+      min-height: 290px;
+      padding: 22px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255,255,255,0.095);
+      background:
+        radial-gradient(circle at var(--mx, 50%) var(--my, 20%), rgba(255,255,255,0.1), transparent 34%),
+        rgba(255,255,255,0.035);
+      transition: 0.25s ease;
+    }
+
+    .capability-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255,255,255,0.19);
+    }
+
+    .capability-number {
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .capability-card h3 {
+      margin-top: 78px;
+      font-family: var(--display);
+      font-size: 25px;
+      line-height: 1;
+      letter-spacing: -0.06em;
+    }
+
+    .capability-card p {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* =========================
+       WHY HIRE ME
+    ========================= */
+
+    .proof-panel {
+      overflow: hidden;
+      padding: 28px;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255,255,255,0.11);
+      background:
+        radial-gradient(circle at 75% 20%, rgba(255,255,255,0.12), transparent 31%),
+        linear-gradient(135deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025));
+    }
+
+    .proof-layout {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 24px;
+    }
+
+    .proof-text h2 {
+      font-family: var(--display);
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 0.94;
+      letter-spacing: -0.07em;
+    }
+
+    .proof-text p {
+      margin-top: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .audit-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .audit-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 16px;
+      align-items: center;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(0,0,0,0.28);
+    }
+
+    .audit-row span {
+      color: var(--dim);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .audit-row strong {
+      font-size: 14px;
+    }
+
+    /* =========================
+       PROCESS
+    ========================= */
+
+    .process-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .process-step {
+      display: grid;
+      grid-template-columns: 150px 1fr 0.7fr;
+      gap: 24px;
+      align-items: center;
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255,255,255,0.095);
+      background: rgba(255,255,255,0.035);
+      transition: 0.25s ease;
+    }
+
+    .process-step:hover {
+      transform: translateX(6px);
+      border-color: rgba(255,255,255,0.18);
+    }
+
+    .process-step span {
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .process-step h3 {
+      font-family: var(--display);
+      font-size: 27px;
+      letter-spacing: -0.055em;
+    }
+
+    .process-step p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    /* =========================
+       CONTACT
+    ========================= */
+
+    .contact-section {
+      padding-bottom: 120px;
+    }
+
+    .contact-panel {
+      position: relative;
+      overflow: hidden;
+      padding: 52px;
+      border-radius: 38px;
+      border: 1px solid rgba(255,255,255,0.13);
+      background:
+        radial-gradient(circle at 85% 20%, rgba(255,255,255,0.15), transparent 28%),
+        radial-gradient(circle at 10% 90%, rgba(184,164,255,0.10), transparent 26%),
+        linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.025));
+    }
+
+    .contact-panel h2 {
+      position: relative;
+      z-index: 1;
+      max-width: 850px;
+      font-family: var(--display);
+      font-size: clamp(42px, 6vw, 76px);
+      line-height: 0.9;
+      letter-spacing: -0.08em;
+    }
+
+    .contact-panel p {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      margin-top: 20px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .contact-options {
+      position: relative;
+      z-index: 1;
+      margin-top: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .contact-option {
+      min-width: 235px;
+      padding: 17px 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.28);
+      transition: 0.22s ease;
+    }
+
+    .contact-option:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.23);
+      background: rgba(255,255,255,0.055);
+    }
+
+    .contact-option span {
+      display: block;
+      color: var(--dim);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .contact-option strong {
+      display: block;
+      margin-top: 6px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      padding: 34px 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: var(--dim);
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+
+    /* =========================
+       ANIMATIONS
+    ========================= */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tilt {
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    /* =========================
+       RESPONSIVE DESIGN
+    ========================= */
+
+    @media (max-width: 1000px) {
+      .hero,
+      .work-grid,
+      .proof-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .capability-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .process-step {
+        grid-template-columns: 1fr;
+      }
+
+      .floating-card {
+        right: 18px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .container,
+      .site-nav {
+        width: min(100% - 28px, 1180px);
+      }
+
+      .nav-links a:not(.hire-link) {
+        display: none;
+      }
+
+      .brand-name {
+        font-size: 18px;
+      }
+
+      .hero {
+        padding-top: 130px;
+      }
+
+      .hero-stats,
+      .system-grid,
+      .capability-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 82px 0;
+      }
+
+      .section-header {
+        display: block;
+      }
+
+      .section-header p {
+        margin-top: 16px;
+      }
+
+      .work-card.large {
+        min-height: 640px;
+      }
+
+      .work-card {
+        min-height: 440px;
+      }
+
+      .floating-card {
+        display: none;
+      }
+
+      .audit-row {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-panel {
+        padding: 30px;
+      }
+
+      .footer-inner {
+        display: block;
+      }
+
+      .footer-inner div:last-child {
+        margin-top: 8px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="noise"></div>
+  <div class="cursor-light"></div>
 
-<div class="noise"></div>
-<div class="cursor-glow"></div>
+  <!-- =========================
+       NAVIGATION
+  ========================== -->
 
-<nav>
-  <div class="container nav-inner">
-    <a class="logo" href="#">
-      <span class="logo-mark"></span>
-      Revnoxis
-    </a>
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a href="#" class="brand">
+        <span class="brand-mark"></span>
+        <span class="brand-name">Revnoxis</span>
+      </a>
 
-    <div class="nav-links">
-      <a href="#work">Work</a>
-      <a href="#systems">Systems</a>
-      <a href="#process">Process</a>
-      <a class="nav-cta" href="#contact">Hire Me</a>
+      <nav class="nav-links">
+        <a href="#work">Work</a>
+        <a href="#systems">Systems</a>
+        <a href="#proof">Proof</a>
+        <a href="#process">Process</a>
+        <a href="#contact" class="hire-link">Hire Me</a>
+      </nav>
     </div>
-  </div>
-</nav>
+  </header>
 
-<main class="container">
+  <main>
+    <!-- =========================
+         HERO
+    ========================== -->
 
-  <section class="hero">
-    <div>
-      <div class="eyebrow">
-        <span class="pulse"></span>
-        Roblox Scripter / Systems Developer
-      </div>
-
-      <h1>
-        I build Roblox systems that feel <span>finished.</span>
-      </h1>
-
-      <p class="hero-copy">
-        I create clean, secure, and scalable Roblox game systems — from combat and inventory
-        to data handling, UI logic, and server-client architecture. Not messy scripts.
-        Not random effects. <strong>Real systems built properly.</strong>
-      </p>
-
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#contact">Start a Project</a>
-        <a class="btn btn-secondary" href="#work">View Selected Work</a>
-      </div>
-
-      <div class="hero-proof">
-        <div class="proof">
-          <strong>Luau</strong>
-          <span>Primary language</span>
+    <section class="hero container">
+      <div class="hero-content reveal">
+        <div class="eyebrow">
+          <span class="live-dot"></span>
+          Available for serious Roblox builds
         </div>
-        <div class="proof">
-          <strong>Server</strong>
-          <span>Secure logic</span>
-        </div>
-        <div class="proof">
-          <strong>Modular</strong>
-          <span>Clean structure</span>
-        </div>
-      </div>
-    </div>
 
-    <div class="showcase reveal">
-      <div class="device tilt">
-        <div class="device-screen">
-          <div class="screen-top">
-            <span class="window-dot"></span>
-            <span class="window-dot"></span>
-            <span class="window-dot"></span>
+        <h1 class="hero-title">
+          <span>Roblox systems</span>
+          <span class="muted">with actual</span>
+          <span>engineering.</span>
+        </h1>
+
+        <p class="hero-text">
+          I build Roblox systems that are clean, secure, scalable, and ready for real players.
+          Combat, inventory, UI, data, remotes, modules, and server-side logic —
+          <strong>built properly from the start.</strong>
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#contact" class="button button-primary">Start a Project</a>
+          <a href="#work" class="button button-secondary">See My Work</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card">
+            <strong>Luau</strong>
+            <span>Primary language</span>
           </div>
 
-          <div class="screen-body">
-            <div class="profile-card">
-              <div class="profile-head">
-                <div class="avatar"></div>
-                <div class="status">Available</div>
-              </div>
+          <div class="stat-card">
+            <strong>Secure</strong>
+            <span>Server authority</span>
+          </div>
 
-              <h2>Systems-first scripting.</h2>
-              <p>
-                Built for games that need reliability, maintainability, and clean gameplay feel.
-              </p>
-
-              <div class="mini-grid">
-                <div class="mini">
-                  <span>Focus</span>
-                  <strong>Gameplay Systems</strong>
-                </div>
-                <div class="mini">
-                  <span>Style</span>
-                  <strong>Clean Architecture</strong>
-                </div>
-                <div class="mini">
-                  <span>Logic</span>
-                  <strong>Server Validated</strong>
-                </div>
-                <div class="mini">
-                  <span>Build</span>
-                  <strong>Scalable Modules</strong>
-                </div>
-              </div>
-            </div>
-
-            <div class="code-card">
-              <div><span class="dim">local</span> System = {}</div>
-              <div><span class="dim">function</span> <span class="key">System:Validate(player, action)</span></div>
-              <div>&nbsp;&nbsp;<span class="dim">-- secure server-side checks</span></div>
-              <div>&nbsp;&nbsp;<span class="dim">return</span> action.IsReady and player.Character</div>
-              <div><span class="dim">end</span></div>
-            </div>
+          <div class="stat-card">
+            <strong>Modular</strong>
+            <span>Clean architecture</span>
           </div>
         </div>
       </div>
 
-      <div class="float-card">
-        <span>Developer Type</span>
-        <strong>Builder, not decorator.</strong>
+      <div class="hero-visual reveal">
+        <div class="console-shell tilt">
+          <div class="console">
+            <div class="console-top">
+              <div class="window-dots">
+                <span class="window-dot"></span>
+                <span class="window-dot"></span>
+                <span class="window-dot"></span>
+              </div>
+
+              <div class="console-label">system.pipeline</div>
+            </div>
+
+            <div class="console-body">
+              <div class="system-card">
+                <div class="system-header">
+                  <div class="system-icon"></div>
+                  <div class="status-pill">READY TO BUILD</div>
+                </div>
+
+                <h2>Clean logic. Strong structure. Smooth gameplay.</h2>
+
+                <p>
+                  A portfolio for clients who care about systems that work,
+                  not just effects that look cool for five seconds.
+                </p>
+
+                <div class="system-grid">
+                  <div class="system-box">
+                    <span>Architecture</span>
+                    <strong>Module-based</strong>
+                  </div>
+
+                  <div class="system-box">
+                    <span>Security</span>
+                    <strong>Server-validated</strong>
+                  </div>
+
+                  <div class="system-box">
+                    <span>Gameplay</span>
+                    <strong>Responsive feel</strong>
+                  </div>
+
+                  <div class="system-box">
+                    <span>Delivery</span>
+                    <strong>Readable code</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="code-box">
+                <div><span class="code-comment">-- Revnoxis system pattern</span></div>
+                <div><span class="code-keyword">local</span> CombatService = {}</div>
+                <br />
+                <div><span class="code-keyword">function</span> CombatService:Validate(player, attack)</div>
+                <div>&nbsp;&nbsp;<span class="code-keyword">if</span> not player.Character <span class="code-keyword">then return false end</span></div>
+                <div>&nbsp;&nbsp;<span class="code-comment">-- server checks before damage</span></div>
+                <div>&nbsp;&nbsp;<span class="code-keyword">return</span> attack.Ready and attack.InRange</div>
+                <div><span class="code-keyword">end</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="floating-card">
+          <span>Positioning</span>
+          <strong>Not a decorator. A builder.</strong>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section reveal" id="work">
-    <div class="section-head">
-      <div>
-        <div class="kicker">Selected Work</div>
-        <h2>Systems that make a game feel real.</h2>
+    <!-- =========================
+         SKILL STRIP
+    ========================== -->
+
+    <section class="skill-strip">
+      <div class="strip-track">
+        <span>Server Authority <em>/</em></span>
+        <span>Combat Logic <em>/</em></span>
+        <span>Inventory Systems <em>/</em></span>
+        <span>Data Handling <em>/</em></span>
+        <span>UI Programming <em>/</em></span>
+        <span>Remote Validation <em>/</em></span>
+        <span>Module Architecture <em>/</em></span>
+
+        <span>Server Authority <em>/</em></span>
+        <span>Combat Logic <em>/</em></span>
+        <span>Inventory Systems <em>/</em></span>
+        <span>Data Handling <em>/</em></span>
+        <span>UI Programming <em>/</em></span>
+        <span>Remote Validation <em>/</em></span>
+        <span>Module Architecture <em>/</em></span>
       </div>
+    </section>
 
-      <p>
-        These are the kinds of systems clients actually care about:
-        gameplay, saving, UI, and structure that does not fall apart.
-      </p>
-    </div>
+    <!-- =========================
+         SELECTED WORK
+    ========================== -->
 
-    <div class="projects">
-      <article class="project large tilt">
-        <h3>Combat Framework</h3>
+    <section class="section container reveal" id="work">
+      <div class="section-header">
+        <div>
+          <div class="kicker">Selected Work</div>
+          <h2 class="section-title">Systems that make games feel finished.</h2>
+        </div>
+
         <p>
-          A responsive combat foundation designed around clean server validation,
-          cooldown control, combo state, and readable module separation.
+          These are the types of systems Roblox teams actually care about:
+          mechanics, security, data, UI, and structure.
+        </p>
+      </div>
+
+      <div class="work-grid">
+        <article class="work-card large spotlight tilt">
+          <div class="work-number">PROJECT / 01</div>
+
+          <h3>Combat Framework</h3>
+
+          <p>
+            A server-authoritative combat foundation designed for responsive attacks,
+            clean cooldowns, safe hit validation, and flexible combo expansion.
+          </p>
+
+          <ul class="work-list">
+            <li>Combo chains and attack windows</li>
+            <li>RemoteEvent validation</li>
+            <li>Cooldown and state handling</li>
+            <li>Hitbox and range sanity checks</li>
+            <li>Separation between client visuals and server damage</li>
+          </ul>
+
+          <div class="tags">
+            <span class="tag">Combat</span>
+            <span class="tag">Server Logic</span>
+            <span class="tag">Remotes</span>
+            <span class="tag">Modules</span>
+          </div>
+
+          <div class="fake-preview"></div>
+        </article>
+
+        <article class="work-card spotlight tilt">
+          <div class="work-number">PROJECT / 02</div>
+
+          <h3>Inventory System</h3>
+
+          <p>
+            Slot-based inventory logic built around clean item data,
+            UI updates, equipment states, and scalable module structure.
+          </p>
+
+          <div class="tags">
+            <span class="tag">Inventory</span>
+            <span class="tag">Items</span>
+            <span class="tag">UI Logic</span>
+          </div>
+
+          <div class="fake-preview"></div>
+        </article>
+
+        <article class="work-card spotlight tilt">
+          <div class="work-number">PROJECT / 03</div>
+
+          <h3>Data System</h3>
+
+          <p>
+            Secure player data flow with organized profiles, session protection,
+            saving structure, and anti-loss thinking.
+          </p>
+
+          <div class="tags">
+            <span class="tag">DataStore</span>
+            <span class="tag">Profiles</span>
+            <span class="tag">Anti-Loss</span>
+          </div>
+
+          <div class="fake-preview"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- =========================
+         CAPABILITIES
+    ========================== -->
+
+    <section class="section container reveal" id="systems">
+      <div class="section-header">
+        <div>
+          <div class="kicker">Capabilities</div>
+          <h2 class="section-title">What I can build for your game.</h2>
+        </div>
+
+        <p>
+          The goal is simple: make your game feel better, safer, and easier to update.
+          Good scripting should make the whole project stronger.
+        </p>
+      </div>
+
+      <div class="capability-grid">
+        <div class="capability-card spotlight">
+          <div class="capability-number">01</div>
+          <h3>Gameplay Systems</h3>
+          <p>Combat, abilities, tools, cooldowns, quests, progression, shops, and interactive mechanics.</p>
+        </div>
+
+        <div class="capability-card spotlight">
+          <div class="capability-number">02</div>
+          <h3>Server Security</h3>
+          <p>Remote validation, sanity checks, anti-exploit logic, and server-authoritative game flow.</p>
+        </div>
+
+        <div class="capability-card spotlight">
+          <div class="capability-number">03</div>
+          <h3>Data Handling</h3>
+          <p>Player data, saving, loading, profiles, inventory storage, stats, and safer session handling.</p>
+        </div>
+
+        <div class="capability-card spotlight">
+          <div class="capability-number">04</div>
+          <h3>UI Programming</h3>
+          <p>Menus, HUDs, inventories, shops, transitions, buttons, panels, and reusable UI logic.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+         WHY HIRE ME
+    ========================== -->
+
+    <section class="section container reveal" id="proof">
+      <div class="proof-panel">
+        <div class="proof-layout">
+          <div class="proof-text">
+            <div class="kicker">Why Hire Me</div>
+
+            <h2>I think like someone who has to maintain the game later.</h2>
+
+            <p>
+              Anyone can make a script work once. I care about what happens after:
+              updates, bugs, exploit attempts, more content, and real players touching the system.
+            </p>
+          </div>
+
+          <div class="audit-list">
+            <div class="audit-row">
+              <span>Code Style</span>
+              <strong>Readable modules instead of one messy giant script.</strong>
+            </div>
+
+            <div class="audit-row">
+              <span>Security</span>
+              <strong>Important checks happen on the server, not blindly on the client.</strong>
+            </div>
+
+            <div class="audit-row">
+              <span>Scalability</span>
+              <strong>Built so new items, attacks, UI states, or features can be added later.</strong>
+            </div>
+
+            <div class="audit-row">
+              <span>Feel</span>
+              <strong>Systems are made to feel responsive, polished, and intentional in-game.</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+         PROCESS
+    ========================== -->
+
+    <section class="section container reveal" id="process">
+      <div class="section-header">
+        <div>
+          <div class="kicker">Process</div>
+          <h2 class="section-title">How I build without making a mess.</h2>
+        </div>
+
+        <p>
+          The process is focused on clarity: understand the system,
+          build the structure, protect it, then polish the player experience.
+        </p>
+      </div>
+
+      <div class="process-list">
+        <div class="process-step">
+          <span>STEP 01</span>
+          <h3>Break down the system</h3>
+          <p>I map out what the mechanic needs, what can go wrong, and what needs to be server-controlled.</p>
+        </div>
+
+        <div class="process-step">
+          <span>STEP 02</span>
+          <h3>Build clean architecture</h3>
+          <p>I separate modules, client visuals, server logic, remotes, data, and UI so the project stays readable.</p>
+        </div>
+
+        <div class="process-step">
+          <span>STEP 03</span>
+          <h3>Polish the final feel</h3>
+          <p>I refine responsiveness, edge cases, cooldowns, UI feedback, and validation until it feels complete.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+         CONTACT
+    ========================== -->
+
+    <section class="section container contact-section reveal" id="contact">
+      <div class="contact-panel">
+        <div class="kicker">Hire Revnoxis</div>
+
+        <h2>Need your Roblox game to feel properly built?</h2>
+
+        <p>
+          Send me the mechanic, the problem, or the system you need.
+          I can build from scratch, clean up messy scripts, or help turn
+          a rough idea into a polished Roblox system.
         </p>
 
-        <ul>
-          <li>Combo chains and attack windows</li>
-          <li>Server-side hit validation</li>
-          <li>RemoteEvent structure</li>
-          <li>Cooldown and state handling</li>
-        </ul>
+        <div class="contact-options">
+          <a class="contact-option" href="https://discord.com/" target="_blank">
+            <span>Discord</span>
+            <strong>yourname</strong>
+          </a>
 
-        <div class="tags">
-          <span class="tag">Combat</span>
-          <span class="tag">Server Logic</span>
-          <span class="tag">Remotes</span>
-          <span class="tag">Modules</span>
+          <a class="contact-option" href="https://www.roblox.com/users/" target="_blank">
+            <span>Roblox</span>
+            <strong>Profile Link</strong>
+          </a>
+
+          <a class="contact-option" href="#work">
+            <span>Portfolio</span>
+            <strong>View Selected Work</strong>
+          </a>
         </div>
-      </article>
+      </div>
+    </section>
+  </main>
 
-      <article class="project tilt">
-        <h3>Inventory System</h3>
-        <p>
-          A modular slot-based inventory structure for items, equipment,
-          UI updates, and scalable item data.
-        </p>
+  <!-- =========================
+       FOOTER
+  ========================== -->
 
-        <div class="tags">
-          <span class="tag">Inventory</span>
-          <span class="tag">UI</span>
-          <span class="tag">Item Data</span>
-        </div>
-      </article>
-
-      <article class="project tilt">
-        <h3>Data Handling</h3>
-        <p>
-          Secure saving structure with profile-style organization,
-          session protection, and clean data flow.
-        </p>
-
-        <div class="tags">
-          <span class="tag">DataStore</span>
-          <span class="tag">Profiles</span>
-          <span class="tag">Anti-Loss</span>
-        </div>
-      </article>
+  <footer>
+    <div class="container footer-inner">
+      <div>© 2026 Revnoxis — Roblox Systems Developer.</div>
+      <div>Built with structure, restraint, and taste.</div>
     </div>
-  </section>
+  </footer>
 
-  <section class="section reveal" id="systems">
-    <div class="section-head">
-      <div>
-        <div class="kicker">What I Build</div>
-        <h2>Not just scripts. Actual systems.</h2>
-      </div>
+  <script>
+    /* =========================
+       CURSOR LIGHT
+    ========================= */
 
-      <p>
-        A strong Roblox project needs more than random code. It needs structure,
-        security, maintainability, and gameplay that feels polished.
-      </p>
-    </div>
+    const cursorLight = document.querySelector(".cursor-light");
 
-    <div class="capabilities">
-      <div class="capability">
-        <div class="number">01</div>
-        <h3>Gameplay Logic</h3>
-        <p>Combat, abilities, cooldowns, progression, quests, tools, and interactive mechanics.</p>
-      </div>
+    window.addEventListener("mousemove", (event) => {
+      cursorLight.style.opacity = "1";
+      cursorLight.style.left = event.clientX + "px";
+      cursorLight.style.top = event.clientY + "px";
+    });
 
-      <div class="capability">
-        <div class="number">02</div>
-        <h3>Server Security</h3>
-        <p>Remote validation, sanity checks, exploit-resistant logic, and server-authoritative systems.</p>
-      </div>
+    /* =========================
+       REVEAL ON SCROLL
+    ========================= */
 
-      <div class="capability">
-        <div class="number">03</div>
-        <h3>Data Systems</h3>
-        <p>Saving, loading, profiles, session handling, player stats, inventory data, and backups.</p>
-      </div>
+    const revealElements = document.querySelectorAll(".reveal");
 
-      <div class="capability">
-        <div class="number">04</div>
-        <h3>UI Programming</h3>
-        <p>Menus, HUDs, shops, inventories, transitions, reusable components, and clean UX logic.</p>
-      </div>
-    </div>
-  </section>
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, {
+      threshold: 0.15
+    });
 
-  <section class="section reveal" id="process">
-    <div class="section-head">
-      <div>
-        <div class="kicker">Process</div>
-        <h2>How I approach a build.</h2>
-      </div>
+    revealElements.forEach((element) => {
+      revealObserver.observe(element);
+    });
 
-      <p>
-        The goal is not to rush out messy code. The goal is to build something
-        that can survive real players, real updates, and real game growth.
-      </p>
-    </div>
+    /* =========================
+       CARD SPOTLIGHT
+    ========================= */
 
-    <div class="process">
-      <div class="step">
-        <span>Step 01</span>
-        <h3>Understand the mechanic</h3>
-        <p>I break down what the system needs to do, what can be abused, and how it should feel in-game.</p>
-      </div>
+    const spotlightCards = document.querySelectorAll(".spotlight");
 
-      <div class="step">
-        <span>Step 02</span>
-        <h3>Build the structure</h3>
-        <p>I separate client visuals from server authority and keep the code modular instead of tangled.</p>
-      </div>
+    spotlightCards.forEach((card) => {
+      card.addEventListener("mousemove", (event) => {
+        const rect = card.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
 
-      <div class="step">
-        <span>Step 03</span>
-        <h3>Polish and protect</h3>
-        <p>I refine edge cases, cooldowns, data flow, UI feedback, and validation so the system feels complete.</p>
-      </div>
-    </div>
-  </section>
+        card.style.setProperty("--mx", `${x}px`);
+        card.style.setProperty("--my", `${y}px`);
+      });
+    });
 
-  <section class="section reveal" id="contact">
-    <div class="contact-panel">
-      <div class="kicker">Hire Revnoxis</div>
-      <h2>Need someone who can make your Roblox game actually work?</h2>
+    /* =========================
+       SUBTLE 3D TILT
+    ========================= */
 
-      <p>
-        I can help build clean systems, fix messy code, improve your game structure,
-        or create mechanics from scratch. Send the idea, the problem, or the system you need.
-      </p>
+    const tiltElements = document.querySelectorAll(".tilt");
 
-      <div class="contact-row">
-        <a class="contact-card" href="https://discord.com/" target="_blank">
-          <span>Discord</span>
-          <strong>yourname</strong>
-        </a>
+    tiltElements.forEach((element) => {
+      element.addEventListener("mousemove", (event) => {
+        const rect = element.getBoundingClientRect();
 
-        <a class="contact-card" href="https://www.roblox.com/users/" target="_blank">
-          <span>Roblox</span>
-          <strong>Profile Link</strong>
-        </a>
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
 
-        <a class="contact-card" href="#work">
-          <span>Portfolio</span>
-          <strong>View Work</strong>
-        </a>
-      </div>
-    </div>
-  </section>
+        const rotateX = ((y / rect.height) - 0.5) * -5;
+        const rotateY = ((x / rect.width) - 0.5) * 5;
 
-</main>
+        element.style.transform =
+          `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      });
 
-<footer>
-  <div class="container">
-    © 2026 Revnoxis — Roblox Systems Developer.
-  </div>
-</footer>
-
-<script>
-const glow = document.querySelector(".cursor-glow");
-
-window.addEventListener("mousemove", (e) => {
-  glow.style.opacity = "1";
-  glow.style.left = e.clientX + "px";
-  glow.style.top = e.clientY + "px";
-});
-
-const revealElements = document.querySelectorAll(".reveal");
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("visible");
-    }
-  });
-}, {
-  threshold: 0.15
-});
-
-revealElements.forEach(el => observer.observe(el));
-
-const tiltCards = document.querySelectorAll(".tilt");
-
-tiltCards.forEach(card => {
-  card.addEventListener("mousemove", (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const rotateX = ((y / rect.height) - 0.5) * -6;
-    const rotateY = ((x / rect.width) - 0.5) * 6;
-
-    card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-  });
-
-  card.addEventListener("mouseleave", () => {
-    card.style.transform = "";
-  });
-});
-</script>
-
+      element.addEventListener("mouseleave", () => {
+        element.style.transform = "";
+      });
+    });
+  </script>
 </body>
 </html>
