@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>REVNOXIS // BOOT</title>
+<title>Revnoxis | Roblox Scripter</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 * {
@@ -15,123 +15,86 @@
 }
 
 body {
-  background: black;
-  color: white;
-  overflow: hidden;
+  background: #0b0c10;
+  color: #e6e6e6;
 }
 
-/* ================= LOADING SCREEN ================= */
-
-#loader {
+/* subtle background */
+.bg {
   position: fixed;
-  width: 100%;
-  height: 100%;
-  background: black;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+  inset: 0;
+  background: radial-gradient(circle at top, #1a1f2e, transparent 60%),
+              radial-gradient(circle at bottom right, #141829, transparent 55%);
+  z-index: -1;
 }
 
-.glitch {
-  font-size: 42px;
-  font-weight: 800;
-  letter-spacing: 3px;
-  animation: glitch 1s infinite;
-}
-
-@keyframes glitch {
-  0% { text-shadow: 2px 0 #7c3aed, -2px 0 #00d4ff; }
-  50% { text-shadow: -2px 0 #7c3aed, 2px 0 #00d4ff; }
-  100% { text-shadow: 2px 0 #7c3aed, -2px 0 #00d4ff; }
-}
-
-.bar {
-  width: 300px;
-  height: 3px;
-  background: #111;
-  margin-top: 20px;
-  overflow: hidden;
-}
-
-.bar span {
-  display: block;
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #7c3aed, #00d4ff);
-  animation: load 2.5s forwards;
-}
-
-@keyframes load {
-  100% { width: 100%; }
-}
-
-/* ================= MAIN ================= */
-
-#main {
-  display: none;
-  min-height: 100vh;
-  background: radial-gradient(circle at top, #0f0f1a, #000);
-  padding: 80px 20px;
-}
-
+/* layout */
 .container {
-  max-width: 1000px;
+  max-width: 950px;
   margin: auto;
+  padding: 100px 20px;
 }
 
-/* HERO */
+/* header */
 h1 {
-  font-size: 64px;
-  font-weight: 800;
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: -1px;
 }
 
-.sub {
-  color: #a855f7;
-  margin-top: 10px;
+.subtitle {
+  margin-top: 8px;
+  color: #9aa4b2;
+  font-size: 16px;
 }
 
-/* GRID */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-top: 40px;
+/* section spacing */
+.section {
+  margin-top: 60px;
 }
 
-/* CARD */
+/* cards */
 .card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
   padding: 20px;
-  border-radius: 15px;
-  transition: 0.2s;
-  transform-style: preserve-3d;
+  margin-top: 16px;
+  transition: 0.2s ease;
 }
 
 .card:hover {
-  transform: perspective(600px) rotateX(5deg) rotateY(-5deg) scale(1.03);
-  border-color: #7c3aed;
-  box-shadow: 0 0 25px #7c3aed33;
+  transform: translateY(-3px);
+  border-color: rgba(255,255,255,0.15);
 }
 
-/* PROJECT */
-.project {
-  margin-top: 10px;
-  padding: 12px;
-  background: rgba(0,0,0,0.4);
-  border-radius: 10px;
+/* grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
 }
 
-/* FADE IN */
-.fade {
-  animation: fade 1s ease forwards;
+/* project title */
+.project-title {
+  font-weight: 600;
+  margin-bottom: 6px;
 }
 
-@keyframes fade {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.small {
+  color: #9aa4b2;
+  font-size: 14px;
+}
+
+/* links */
+a {
+  color: #c4b5fd;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 </style>
@@ -139,64 +102,61 @@ h1 {
 
 <body>
 
-<!-- LOADER -->
-<div id="loader">
-  <div class="glitch">REVNOXIS SYSTEM BOOT</div>
-  <div class="bar"><span></span></div>
-</div>
+<div class="bg"></div>
 
-<!-- MAIN SITE -->
-<div id="main">
-  <div class="container fade">
+<div class="container">
 
-    <h1>REVNOXIS</h1>
-    <div class="sub">Roblox Systems Engineer // UI Developer // Combat Frameworks</div>
+  <h1>Revnoxis</h1>
+  <div class="subtitle">Roblox Scripter • Systems Developer • UI Programmer</div>
+
+  <div class="section">
+    <div class="card">
+      <div class="project-title">About</div>
+      <div class="small">
+        I build structured Roblox systems focusing on performance, scalability, and clean architecture.
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="project-title">Projects</div>
 
     <div class="grid">
 
       <div class="card">
-        <h2>ABOUT</h2>
-        <p>High-performance Roblox developer focused on scalable systems and clean architecture.</p>
+        <div class="project-title">Combat System</div>
+        <div class="small">Combo system, hit detection, clean server-client sync.</div>
       </div>
 
       <div class="card">
-        <h2>COMBAT ENGINE</h2>
-        <div class="project">Combo system</div>
-        <div class="project">Hit detection</div>
-        <div class="project">VFX sync</div>
+        <div class="project-title">Inventory System</div>
+        <div class="small">Modular slot-based inventory with scalable design.</div>
       </div>
 
       <div class="card">
-        <h2>DATA SYSTEM</h2>
-        <div class="project">Session saving</div>
-        <div class="project">Auto recovery</div>
-        <div class="project">Secure storage</div>
+        <div class="project-title">Data System</div>
+        <div class="small">Secure saving, session handling, anti-loss structure.</div>
       </div>
 
       <div class="card">
-        <h2>UI ENGINE</h2>
-        <div class="project">Reusable components</div>
-        <div class="project">Animated UI</div>
-        <div class="project">Responsive scaling</div>
-      </div>
-
-      <div class="card">
-        <h2>CONTACT</h2>
-        <p>Discord: yourname</p>
-        <p>Roblox: profile link</p>
+        <div class="project-title">UI Framework</div>
+        <div class="small">Reusable UI components built for scaling projects.</div>
       </div>
 
     </div>
   </div>
-</div>
 
-<script>
-// loading screen transition
-setTimeout(() => {
-  document.getElementById("loader").style.display = "none";
-  document.getElementById("main").style.display = "block";
-}, 2600);
-</script>
+  <div class="section">
+    <div class="card">
+      <div class="project-title">Contact</div>
+      <div class="small">
+        Discord: yourname<br>
+        Roblox: https://www.roblox.com/users/
+      </div>
+    </div>
+  </div>
+
+</div>
 
 </body>
 </html>
