@@ -4,76 +4,124 @@
   <meta charset="UTF-8">
   <title>Revnoxis | Roblox Scripter</title>
 
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f0f0f;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #1a1a2e, #0f0f0f);
       color: white;
+      overflow-x: hidden;
     }
 
     .container {
       max-width: 900px;
       margin: auto;
-      padding: 60px 20px;
+      padding: 80px 20px;
     }
 
+    /* Header */
     h1 {
-      font-size: 40px;
-      margin-bottom: 5px;
+      font-size: 52px;
+      font-weight: 800;
+      letter-spacing: 1px;
     }
 
     .tag {
-      color: #7c3aed;
-      margin-bottom: 30px;
-    }
-
-    .card {
-      background: #1a1a1a;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-    }
-
-    .project {
       margin-top: 10px;
-      padding: 10px;
-      background: #111;
-      border-radius: 8px;
+      color: #a855f7;
+      font-weight: 600;
     }
 
+    /* Cards */
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 20px;
+      border-radius: 14px;
+      margin-top: 20px;
+      backdrop-filter: blur(10px);
+      transition: 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: #a855f7;
+      box-shadow: 0 0 20px rgba(168,85,247,0.3);
+    }
+
+    /* Projects */
+    .project {
+      margin-top: 12px;
+      padding: 12px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+
+    .project:hover {
+      transform: scale(1.02);
+      background: rgba(168,85,247,0.1);
+    }
+
+    /* Links */
     a {
-      color: #7c3aed;
+      color: #a855f7;
       text-decoration: none;
     }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Section titles */
+    h2 {
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+
   </style>
 </head>
 
 <body>
+
   <div class="container">
 
     <h1>Revnoxis</h1>
-    <div class="tag">Roblox Scripter</div>
+    <div class="tag">Roblox Scripter • Systems Developer</div>
 
     <div class="card">
       <h2>About Me</h2>
-      <p>I build Roblox systems like combat, UI, inventory, and data saving.</p>
+      <p>
+        I build high-quality Roblox systems including combat, UI, inventory systems, and backend logic.
+        Focused on clean code, performance, and scalable design.
+      </p>
     </div>
 
     <div class="card">
       <h2>Projects</h2>
 
-      <div class="project">🔥 Combat System (Combo + Hit Detection)</div>
-      <div class="project">🎒 Inventory System (Modular)</div>
-      <div class="project">💾 DataStore Saving System</div>
+      <div class="project">🔥 Combat System — combo-based melee system with hit detection</div>
+      <div class="project">🎒 Inventory System — modular and expandable item framework</div>
+      <div class="project">💾 DataStore System — secure saving/loading system</div>
+      <div class="project">🖥 UI Framework — reusable UI components</div>
+
     </div>
 
     <div class="card">
       <h2>Contact</h2>
       <p>Discord: yourname</p>
-      <p>Roblox: https://roblox.com/users/</p>
+      <p>Roblox: <a href="https://www.roblox.com/">Profile Link</a></p>
     </div>
 
   </div>
+
 </body>
 </html>
