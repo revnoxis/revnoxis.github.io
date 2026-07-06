@@ -9,24 +9,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* =========================
-       BASE
-    ========================= */
-
     :root {
       --bg: #020202;
       --text: #f4f4f5;
       --muted: #a1a1aa;
-      --dim: #66666f;
-
+      --dim: #68686f;
       --card: rgba(255,255,255,0.045);
       --card-hover: rgba(255,255,255,0.075);
       --border: rgba(255,255,255,0.105);
       --border-strong: rgba(255,255,255,0.2);
-
       --green: #8cffb6;
       --purple: #b9a7ff;
-
       --display: "Space Grotesk", sans-serif;
       --body: "Inter", sans-serif;
     }
@@ -63,10 +56,6 @@
       margin: 0 auto;
     }
 
-    /* =========================
-       LOADER
-    ========================= */
-
     .loader {
       position: fixed;
       inset: 0;
@@ -75,7 +64,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.65s ease, visibility 0.65s ease;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
     }
 
     .loader.hidden {
@@ -84,17 +73,15 @@
     }
 
     .loader-box {
-      width: 240px;
+      width: 230px;
     }
 
     .loader-top {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       margin-bottom: 14px;
       font-size: 13px;
       font-weight: 700;
-      color: #e8e8e8;
     }
 
     .loader-top span:last-child {
@@ -104,18 +91,17 @@
 
     .loader-line {
       height: 2px;
-      width: 100%;
-      border-radius: 99px;
+      border-radius: 999px;
       overflow: hidden;
       background: rgba(255,255,255,0.08);
     }
 
     .loader-line span {
       display: block;
+      width: 45%;
       height: 100%;
-      width: 48%;
-      border-radius: 99px;
-      background: white;
+      border-radius: 999px;
+      background: #f4f4f5;
       animation: loading 1.1s ease infinite;
     }
 
@@ -125,13 +111,9 @@
       }
 
       to {
-        transform: translateX(230%);
+        transform: translateX(235%);
       }
     }
-
-    /* =========================
-       BACKGROUND
-    ========================= */
 
     .background {
       position: fixed;
@@ -139,10 +121,10 @@
       z-index: -5;
       overflow: hidden;
       background:
-        radial-gradient(circle at 50% -15%, rgba(255,255,255,0.16), transparent 34%),
-        radial-gradient(circle at 8% 24%, rgba(185,167,255,0.11), transparent 32%),
-        radial-gradient(circle at 92% 35%, rgba(140,255,182,0.07), transparent 28%),
-        linear-gradient(180deg, #020202 0%, #050505 48%, #010101 100%);
+        radial-gradient(circle at 50% -16%, rgba(255,255,255,0.15), transparent 34%),
+        radial-gradient(circle at 8% 22%, rgba(185,167,255,0.12), transparent 32%),
+        radial-gradient(circle at 92% 36%, rgba(140,255,182,0.065), transparent 30%),
+        linear-gradient(180deg, #020202 0%, #050505 50%, #010101 100%);
     }
 
     .background::before {
@@ -151,43 +133,20 @@
       inset: -20%;
       background:
         linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.045) 42%, transparent 58%),
-        linear-gradient(245deg, transparent 30%, rgba(255,255,255,0.035) 48%, transparent 68%);
+        linear-gradient(245deg, transparent 32%, rgba(255,255,255,0.035) 48%, transparent 68%);
       opacity: 0.75;
-      animation: bgDrift 14s ease-in-out infinite alternate;
+      animation: drift 14s ease-in-out infinite alternate;
     }
 
     .background::after {
       content: "";
       position: absolute;
       inset: 0;
-      opacity: 0.085;
+      opacity: 0.08;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
     }
 
-    .soft-orb {
-      position: fixed;
-      width: 520px;
-      height: 520px;
-      border-radius: 50%;
-      z-index: -4;
-      pointer-events: none;
-      background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 62%);
-      filter: blur(18px);
-      opacity: 0.55;
-    }
-
-    .orb-one {
-      left: -160px;
-      top: 180px;
-    }
-
-    .orb-two {
-      right: -170px;
-      bottom: 120px;
-      background: radial-gradient(circle, rgba(185,167,255,0.09), transparent 64%);
-    }
-
-    @keyframes bgDrift {
+    @keyframes drift {
       from {
         transform: translate3d(-2%, -1%, 0) rotate(0deg);
       }
@@ -197,52 +156,50 @@
       }
     }
 
-    /* =========================
-       CURSOR LIGHT
-    ========================= */
+    .orb {
+      position: fixed;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      z-index: -4;
+      pointer-events: none;
+      filter: blur(18px);
+      opacity: 0.55;
+    }
+
+    .orb-one {
+      left: -170px;
+      top: 180px;
+      background: radial-gradient(circle, rgba(255,255,255,0.075), transparent 64%);
+    }
+
+    .orb-two {
+      right: -170px;
+      bottom: 120px;
+      background: radial-gradient(circle, rgba(185,167,255,0.09), transparent 64%);
+    }
 
     .cursor-glow {
       position: fixed;
       left: 0;
       top: 0;
-      width: 540px;
-      height: 540px;
+      width: 560px;
+      height: 560px;
       border-radius: 50%;
       pointer-events: none;
       z-index: -1;
       opacity: 0;
+      background: radial-gradient(circle, rgba(255,255,255,0.16), rgba(255,255,255,0.05) 32%, transparent 66%);
+      filter: blur(12px);
       transform: translate3d(-50%, -50%, 0);
-      background:
-        radial-gradient(circle at center, rgba(255,255,255,0.16), rgba(255,255,255,0.055) 30%, transparent 66%);
-      filter: blur(10px);
       transition: opacity 0.25s ease;
     }
-
-    .cursor-dot {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 1000;
-      opacity: 0;
-      transform: translate3d(-50%, -50%, 0);
-      background: rgba(255,255,255,0.9);
-      box-shadow: 0 0 20px rgba(255,255,255,0.45);
-      transition: opacity 0.25s ease;
-    }
-
-    /* =========================
-       PAGE
-    ========================= */
 
     .page {
       opacity: 0;
       transform: translateY(12px);
-      animation: pageIn 0.8s ease forwards;
-      animation-delay: 0.2s;
+      animation: pageIn 0.75s ease forwards;
+      animation-delay: 0.15s;
     }
 
     @keyframes pageIn {
@@ -251,10 +208,6 @@
         transform: translateY(0);
       }
     }
-
-    /* =========================
-       NAV
-    ========================= */
 
     nav {
       height: 88px;
@@ -295,17 +248,13 @@
       background: rgba(255,255,255,0.045);
     }
 
-    /* =========================
-       HERO
-    ========================= */
-
     .hero {
       min-height: calc(100vh - 88px);
       display: grid;
       grid-template-columns: 1.08fr 0.92fr;
       align-items: center;
       gap: 34px;
-      padding: 60px 0 80px;
+      padding: 58px 0 82px;
     }
 
     .status {
@@ -333,9 +282,9 @@
     h1 {
       font-family: var(--display);
       max-width: 780px;
-      font-size: clamp(50px, 8vw, 92px);
-      line-height: 0.9;
-      letter-spacing: -0.08em;
+      font-size: clamp(58px, 9vw, 104px);
+      line-height: 0.88;
+      letter-spacing: -0.085em;
       font-weight: 700;
     }
 
@@ -425,29 +374,20 @@
       line-height: 1.5;
     }
 
-    /* =========================
-       HERO CARD
-    ========================= */
-
     .hero-card {
       position: relative;
       border-radius: 30px;
       padding: 14px;
       border: 1px solid rgba(255,255,255,0.15);
-      background:
-        linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.035));
-      box-shadow:
-        0 40px 110px rgba(0,0,0,0.65),
-        inset 0 1px 0 rgba(255,255,255,0.16);
+      background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.035));
+      box-shadow: 0 40px 110px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.16);
     }
 
     .hero-card-inner {
       border-radius: 22px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.1);
-      background:
-        radial-gradient(circle at top right, rgba(255,255,255,0.09), transparent 34%),
-        #050505;
+      background: radial-gradient(circle at top right, rgba(255,255,255,0.09), transparent 34%), #050505;
     }
 
     .card-top {
@@ -483,7 +423,7 @@
     }
 
     .profile-block {
-      padding: 21px;
+      padding: 22px;
       border-radius: 20px;
       border: 1px solid rgba(255,255,255,0.1);
       background:
@@ -496,14 +436,14 @@
       justify-content: space-between;
       align-items: flex-start;
       gap: 16px;
+      margin-bottom: 22px;
     }
 
     .profile-icon {
       width: 56px;
       height: 56px;
       border-radius: 18px;
-      background:
-        linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.16));
+      background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.16));
       border: 1px solid rgba(255,255,255,0.3);
       box-shadow: 0 18px 60px rgba(255,255,255,0.08);
     }
@@ -523,7 +463,6 @@
       font-size: 32px;
       line-height: 0.96;
       letter-spacing: -0.06em;
-      margin-top: 20px;
     }
 
     .profile-block p {
@@ -533,58 +472,30 @@
       margin-top: 10px;
     }
 
-    .mini-grid {
+    .note-list {
+      margin-top: 20px;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 11px;
-      margin-top: 18px;
+      gap: 10px;
     }
 
-    .mini {
-      padding: 13px;
+    .note {
+      padding: 14px;
       border-radius: 15px;
       border: 1px solid rgba(255,255,255,0.08);
       background: rgba(0,0,0,0.35);
     }
 
-    .mini span {
+    .note strong {
       display: block;
-      color: #6c6c73;
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .mini strong {
-      display: block;
-      margin-top: 4px;
       font-size: 14px;
+      margin-bottom: 4px;
     }
 
-    .code-box {
-      margin-top: 13px;
-      padding: 16px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.085);
-      background: rgba(0,0,0,0.45);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 12px;
-      line-height: 1.75;
-      color: #d6d6d6;
+    .note span {
+      color: #888;
+      font-size: 13px;
+      line-height: 1.55;
     }
-
-    .code-muted {
-      color: #666;
-    }
-
-    .code-light {
-      color: white;
-    }
-
-    /* =========================
-       SECTIONS
-    ========================= */
 
     .section {
       padding: 72px 0;
@@ -650,6 +561,41 @@
       gap: 14px;
     }
 
+    .project-card {
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .project-top {
+      position: relative;
+      height: 92px;
+      border-radius: 16px;
+      margin-bottom: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.18), transparent 32%),
+        linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.025));
+    }
+
+    .project-top::after {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(0,0,0,0.22);
+    }
+
+    .project-link {
+      margin-top: 18px;
+      color: white;
+      font-size: 13px;
+      font-weight: 750;
+    }
+
     .tags {
       display: flex;
       flex-wrap: wrap;
@@ -675,10 +621,6 @@
       max-width: 790px;
       font-size: 15px;
     }
-
-    /* =========================
-       CONTACT
-    ========================= */
 
     .contact-card {
       display: flex;
@@ -718,20 +660,12 @@
       border-color: rgba(255,255,255,0.22);
     }
 
-    /* =========================
-       FOOTER
-    ========================= */
-
     footer {
       padding: 32px 0;
       border-top: 1px solid rgba(255,255,255,0.075);
       color: #666;
       font-size: 13px;
     }
-
-    /* =========================
-       MOTION
-    ========================= */
 
     .reveal {
       opacity: 0;
@@ -743,10 +677,6 @@
       opacity: 1;
       transform: translateY(0);
     }
-
-    /* =========================
-       RESPONSIVE
-    ========================= */
 
     @media (max-width: 900px) {
       .hero {
@@ -773,8 +703,7 @@
       }
 
       .hero-stats,
-      .grid,
-      .mini-grid {
+      .grid {
         grid-template-columns: 1fr;
       }
 
@@ -794,8 +723,7 @@
         margin-top: 18px;
       }
 
-      .cursor-glow,
-      .cursor-dot {
+      .cursor-glow {
         display: none;
       }
     }
@@ -803,7 +731,6 @@
 </head>
 
 <body>
-  <!-- Loader -->
   <div class="loader" id="loader">
     <div class="loader-box">
       <div class="loader-top">
@@ -817,16 +744,13 @@
     </div>
   </div>
 
-  <!-- Background -->
   <div class="background"></div>
-  <div class="soft-orb orb-one"></div>
-  <div class="soft-orb orb-two"></div>
+  <div class="orb orb-one"></div>
+  <div class="orb orb-two"></div>
   <div class="cursor-glow" id="cursorGlow"></div>
-  <div class="cursor-dot" id="cursorDot"></div>
 
   <div class="page">
     <div class="container">
-      <!-- Nav -->
       <nav>
         <a href="#" class="logo">Revnoxis</a>
 
@@ -838,7 +762,6 @@
         </div>
       </nav>
 
-      <!-- Hero -->
       <section class="hero">
         <div class="hero-left">
           <div class="status">
@@ -847,17 +770,17 @@
           </div>
 
           <h1>
-            Roblox systems that feel clean, sharp, and finished.
+            Roblox <span>scripter.</span>
           </h1>
 
           <p class="hero-text">
-            I script Roblox systems with a focus on clean structure, smooth gameplay, and server-side security.
-            I like building things that actually make sense to work with later, not messy scripts that break after one update.
+            I build Roblox systems that are clean, smooth, and easy to work with.
+            I mostly focus on gameplay logic, UI, data, remotes, and making sure the important stuff is handled properly on the server.
           </p>
 
           <div class="hero-actions">
             <a href="#contact" class="button button-primary">Contact Me</a>
-            <a href="#work" class="button button-secondary">View Projects</a>
+            <a href="projects.html" class="button button-secondary">View Projects</a>
           </div>
 
           <div class="hero-stats">
@@ -897,57 +820,46 @@
                   <div class="profile-pill">OPEN</div>
                 </div>
 
-                <h2>Clean systems, not random scripts.</h2>
+                <h2>What I actually care about.</h2>
 
                 <p>
-                  I focus on the parts that make a game feel solid: gameplay logic,
-                  UI behavior, data, remotes, and structure.
+                  I like building systems that feel solid in-game and do not become impossible to edit later.
+                  Clean structure matters, especially when a project starts growing.
                 </p>
 
-                <div class="mini-grid">
-                  <div class="mini">
-                    <span>Focus</span>
-                    <strong>Roblox Systems</strong>
+                <div class="note-list">
+                  <div class="note">
+                    <strong>Clean setup</strong>
+                    <span>Scripts should be readable and easy to come back to.</span>
                   </div>
 
-                  <div class="mini">
-                    <span>Style</span>
-                    <strong>Organized Code</strong>
+                  <div class="note">
+                    <strong>Server checks</strong>
+                    <span>Important logic should not depend on the client being honest.</span>
                   </div>
 
-                  <div class="mini">
-                    <span>Logic</span>
-                    <strong>Server Checked</strong>
+                  <div class="note">
+                    <strong>Good game feel</strong>
+                    <span>Systems should work properly, but they should also feel smooth to use.</span>
                   </div>
 
-                  <div class="mini">
-                    <span>Goal</span>
-                    <strong>Smooth Gameplay</strong>
+                  <div class="note">
+                    <strong>Room to expand</strong>
+                    <span>I try to build things in a way that does not fall apart when more features get added.</span>
                   </div>
                 </div>
-              </div>
-
-              <div class="code-box">
-                <div><span class="code-muted">-- simple, readable structure</span></div>
-                <div><span class="code-light">local</span> System = {}</div>
-                <br />
-                <div><span class="code-light">function</span> System:Run(player)</div>
-                <div>&nbsp;&nbsp;<span class="code-muted">-- server checks first</span></div>
-                <div>&nbsp;&nbsp;<span class="code-light">return</span> true</div>
-                <div><span class="code-light">end</span></div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- About -->
       <section class="section reveal" id="about">
         <div class="section-head">
           <h2 class="section-title">About</h2>
         </div>
 
-        <div class="card about-card">
+        <div class="card about-card spotlight">
           <div class="card-title">I build Roblox systems with structure.</div>
 
           <p class="small">
@@ -958,76 +870,82 @@
         </div>
       </section>
 
-      <!-- Projects -->
       <section class="section reveal" id="work">
         <div class="section-head">
           <h2 class="section-title">Projects</h2>
 
           <p class="section-note">
-            A few examples of systems I can build, improve, or clean up.
+            Click a project to view a separate page with a cleaner image-focused layout.
           </p>
         </div>
 
         <div class="grid">
-          <div class="card spotlight">
-            <div class="card-title">Combat System</div>
+          <a href="projects.html#combat" class="card project-card spotlight">
+            <div>
+              <div class="project-top"></div>
+              <div class="card-title">Combat System</div>
+              <p class="small">Combo handling, cooldowns, hit checks, and server-side validation.</p>
 
-            <p class="small">
-              Combo handling, cooldowns, hit checks, and server-side validation for cleaner combat.
-            </p>
-
-            <div class="tags">
-              <span class="tag">Combat</span>
-              <span class="tag">Remotes</span>
-              <span class="tag">Server Checks</span>
+              <div class="tags">
+                <span class="tag">Combat</span>
+                <span class="tag">Remotes</span>
+                <span class="tag">Server Checks</span>
+              </div>
             </div>
-          </div>
 
-          <div class="card spotlight">
-            <div class="card-title">Inventory System</div>
+            <div class="project-link">View project →</div>
+          </a>
 
-            <p class="small">
-              Slot-based inventory logic with item data, UI updates, and room to expand.
-            </p>
+          <a href="projects.html#inventory" class="card project-card spotlight">
+            <div>
+              <div class="project-top"></div>
+              <div class="card-title">Inventory System</div>
+              <p class="small">Slot-based inventory logic with item data, UI updates, and room to expand.</p>
 
-            <div class="tags">
-              <span class="tag">Inventory</span>
-              <span class="tag">Items</span>
-              <span class="tag">UI Logic</span>
+              <div class="tags">
+                <span class="tag">Inventory</span>
+                <span class="tag">Items</span>
+                <span class="tag">UI Logic</span>
+              </div>
             </div>
-          </div>
 
-          <div class="card spotlight">
-            <div class="card-title">Data System</div>
+            <div class="project-link">View project →</div>
+          </a>
 
-            <p class="small">
-              Player data saving structure with cleaner loading, session handling, and organized profiles.
-            </p>
+          <a href="projects.html#data" class="card project-card spotlight">
+            <div>
+              <div class="project-top"></div>
+              <div class="card-title">Data System</div>
+              <p class="small">Cleaner saving, loading, session handling, and organized player profiles.</p>
 
-            <div class="tags">
-              <span class="tag">DataStore</span>
-              <span class="tag">Saving</span>
-              <span class="tag">Profiles</span>
+              <div class="tags">
+                <span class="tag">DataStore</span>
+                <span class="tag">Saving</span>
+                <span class="tag">Profiles</span>
+              </div>
             </div>
-          </div>
 
-          <div class="card spotlight">
-            <div class="card-title">UI Framework</div>
+            <div class="project-link">View project →</div>
+          </a>
 
-            <p class="small">
-              Reusable UI logic for menus, buttons, panels, inventories, shops, and HUDs.
-            </p>
+          <a href="projects.html#ui" class="card project-card spotlight">
+            <div>
+              <div class="project-top"></div>
+              <div class="card-title">UI Framework</div>
+              <p class="small">Reusable UI logic for menus, buttons, panels, inventories, shops, and HUDs.</p>
 
-            <div class="tags">
-              <span class="tag">UI</span>
-              <span class="tag">Menus</span>
-              <span class="tag">Components</span>
+              <div class="tags">
+                <span class="tag">UI</span>
+                <span class="tag">Menus</span>
+                <span class="tag">Components</span>
+              </div>
             </div>
-          </div>
+
+            <div class="project-link">View project →</div>
+          </a>
         </div>
       </section>
 
-      <!-- Skills -->
       <section class="section reveal" id="skills">
         <div class="section-head">
           <h2 class="section-title">What I Work On</h2>
@@ -1060,7 +978,6 @@
         </div>
       </section>
 
-      <!-- Contact -->
       <section class="section reveal" id="contact">
         <div class="card contact-card spotlight">
           <div>
@@ -1088,10 +1005,6 @@
   </div>
 
   <script>
-    /* =========================
-       LOADER
-    ========================= */
-
     const loader = document.getElementById("loader");
 
     window.addEventListener("load", () => {
@@ -1100,48 +1013,29 @@
       }, 650);
     });
 
-    /* =========================
-       SMOOTH CURSOR LIGHT
-    ========================= */
-
     const cursorGlow = document.getElementById("cursorGlow");
-    const cursorDot = document.getElementById("cursorDot");
 
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
-
     let glowX = mouseX;
     let glowY = mouseY;
-
-    let dotX = mouseX;
-    let dotY = mouseY;
 
     window.addEventListener("mousemove", (event) => {
       mouseX = event.clientX;
       mouseY = event.clientY;
-
       cursorGlow.style.opacity = "1";
-      cursorDot.style.opacity = "1";
     });
 
     function animateCursor() {
-      glowX += (mouseX - glowX) * 0.09;
-      glowY += (mouseY - glowY) * 0.09;
+      glowX += (mouseX - glowX) * 0.08;
+      glowY += (mouseY - glowY) * 0.08;
 
-      dotX += (mouseX - dotX) * 0.35;
-      dotY += (mouseY - dotY) * 0.35;
-
-      cursorGlow.style.transform = `translate3d(${glowX - 270}px, ${glowY - 270}px, 0)`;
-      cursorDot.style.transform = `translate3d(${dotX - 3.5}px, ${dotY - 3.5}px, 0)`;
+      cursorGlow.style.transform = `translate3d(${glowX - 280}px, ${glowY - 280}px, 0)`;
 
       requestAnimationFrame(animateCursor);
     }
 
     animateCursor();
-
-    /* =========================
-       REVEAL ON SCROLL
-    ========================= */
 
     const revealElements = document.querySelectorAll(".reveal");
 
@@ -1158,10 +1052,6 @@
     revealElements.forEach((element) => {
       revealObserver.observe(element);
     });
-
-    /* =========================
-       CARD SPOTLIGHT
-    ========================= */
 
     const spotlightCards = document.querySelectorAll(".spotlight");
 
